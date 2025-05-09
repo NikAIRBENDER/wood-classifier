@@ -24,7 +24,15 @@ def upload():
         result = results[0]
         result.save(filename=os.path.join(RESULT_FOLDER, filename))
 
-        labels = [f"{model.model.names[int(d.cls)]} ({d.conf:.2f})" for d in result.boxes.data]
+        # Получаем списки классов и доверий из result.boxes
+        cls_indices = result.boxes.cls.tolist()     # e.g. [0, 4, ...]
+        confidences = result.boxes.conf.tolist()    # e.g. [0.85, 0.76, ...]
+        
+        # Формируем человеко-читаемые метки
+        labels = [
+            f"{model.model.names[int(cls_idx)]} ({conf:.2f})"
+            for cls_idx, conf in zip(cls_indices, confidences)
+        ]        
 
         return render_template('result.html', image=filename, labels=labels)
 

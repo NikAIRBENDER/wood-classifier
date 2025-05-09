@@ -1,0 +1,12 @@
+
+<!doctype html>
+<title>Результаты</title>
+<h1>Результат классификации</h1>
+<img src="{{ url_for('static', filename='results/' + image) }}" width=500><br>
+<h3>Обнаружено:</h3>
+<ul>
+{% for label in labels %}
+  <li>{{ label }}</li>
+{% endfor %}
+</ul>
+<a href="{{ url_for('upload') }}">Назад</a>
